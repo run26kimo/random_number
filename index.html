@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Template &middot; Bootstrap</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+      	background: pink;
+        padding-top: 20px;
+        padding-bottom: 40px;
+      }
+
+      /* Custom container */
+      .container-narrow {
+        margin: 0 auto;
+        max-width: 700px;
+      }
+      .container-narrow > hr {
+        margin: 30px 0;
+      }
+
+      /* Main marketing message and sign up button */
+      .jumbotron {
+        margin: 60px 0;
+        text-align: center;
+      }
+      .jumbotron h1 {
+        font-size: 72px;
+        line-height: 1;
+      }
+      .jumbotron .btn {
+        font-size: 21px;
+        padding: 14px 24px;
+      }
+
+      /* Supporting marketing content */
+      .marketing {
+        margin: 60px 0;
+      }
+      .marketing p + h4 {
+        margin-top: 28px;
+      }
+      .marketing button {
+        margin-left: 10px;
+      }
+      
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="../assets/ico/favicon.png">
+    
+  </head>
+
+  <body>
+    <div class="container-narrow">
+
+      <div class="masthead">
+        <!-- <ul class="nav nav-pills pull-right">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul> -->
+        <h3 >秉承與錦芳的婚禮 - 抽獎活動</h3>
+      </div>
+
+      <hr>
+
+      <div class="jumbotron">
+        <h1>Rich & Gloria Wedding </h1>
+        <p class="lead">歡迎參加秉承與錦芳的婚禮，請您拿出入場時給你的編號卡，對獎。</p>
+        <a class="btn btn-large btn-success" id="start_button" href="#">Start</a>
+      </div>
+      <hr>
+      <div class="marketing" id="num_group">
+      	<div class="span14" id="num_list">
+          		<h4></h4>
+      			<p class="span11"></p>
+        	</div>
+      </div>
+
+      <hr>
+	  <div class="hide">
+	  	<input type="hidden" id="game_times" value="1" />
+	  	<div class="tmp_num_list">
+	  		<div class="span14" id="num_list">
+          		<h4>第一輪號碼</h4>
+          			<p class="span11"></p>
+        	</div>
+	  	</div>
+	  	
+	  	<div class="tmp_button">
+	  		<button class="btn btn-success"></button>
+	  	</div>
+	  </div>
+      <div class="footer">
+      	<a class="btn" id="reset" href="#">Reset</a>
+        <p>&copy; Company 2012</p>
+      </div>
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery.1.8.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.cookie.js"></script>
+    <script>
+    	
+    	$(function(){
+    		$.cookie.json = true;
+    		$(document).on("click" , "#start_button" , function(){
+    			get_random_number(10);
+    			return false; 
+    		});
+    		$(document).on("click" , "#reset" , function(){
+    			$.cookie('numbers', "");
+    			return false; 
+    		});
+    	});
+    	
+    	function get_random_number(times){
+    		var maxnum = 200;
+    		var numbers = new Array();
+			cookie_numbers = $.isArray($.cookie('numbers')) ? $.cookie('numbers') : new Array();
+			if(cookie_numbers.length < maxnum ){
+				
+    		tmp_num_list = $('.tmp_num_list').find("div").clone();
+			tmp_num_list.find("h4").html('第'+$("#game_times").val()+'輪號碼');
+			$("#game_times").val(parseInt($("#game_times").val())+1);
+			$("div#num_group").prepend(tmp_num_list);
+			do {
+				numRand = Math.floor(Math.random()*(1+maxnum)+1);
+				
+				while(jQuery.inArray( numRand, cookie_numbers) == "-1"){
+					numbers.push(numRand);
+					cookie_numbers.push(numRand);
+					console.log(cookie_numbers , numRand);
+					$.cookie('numbers', cookie_numbers);
+					tmp_button = $('.tmp_button').find("button").clone();
+					tmp_button = tmp_button.html(numRand).hide();
+					$("#num_group div:first p").append(tmp_button.fadeIn(400));
+				}
+				
+			} 
+			while(numbers.length != times)  			
+			}else{
+				alert("以超過最多可以取的得數字 MaxNum:"+maxnum)+"請重置。";
+			}
+    	}
+    	
+    	
+    </script>
+
+  </body>
+</html>
