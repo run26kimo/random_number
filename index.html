@@ -123,11 +123,14 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.cookie.js"></script>
     <script>
+    	var get_number = 10;
+    	var maxnum = 200;
     	
     	$(function(){
     		$.cookie.json = true;
     		$(document).on("click" , "#start_button" , function(){
-    			get_random_number(10);
+    			
+    			get_random_number(get_number);
     			return false; 
     		});
     		$(document).on("click" , "#reset" , function(){
@@ -137,7 +140,7 @@
     	});
     	
     	function get_random_number(times){
-    		var maxnum = 200;
+    		
     		var numbers = new Array();
 			cookie_numbers = $.isArray($.cookie('numbers')) ? $.cookie('numbers') : new Array();
 			if(cookie_numbers.length < maxnum ){
